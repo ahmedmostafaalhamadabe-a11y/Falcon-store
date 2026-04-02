@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Falcon Store | متجر فالكون للشحن</title>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GGVWKDKE66"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-GGVWKDKE66');
+    </script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -13,19 +23,52 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg-overlay: linear-gradient(135deg, rgba(5, 20, 8, 0.75) 0%, rgba(2, 12, 5, 0.85) 100%);
+            --card-bg: rgba(8, 28, 14, 0.65);
+            --text-color: #F0FFF0;
+            --border-color: rgba(80, 200, 100, 0.35);
+            --primary-gold: #FFD966;
+            --primary-green: #9BDF9B;
+        }
+        
+        body.light-mode {
+            --bg-overlay: linear-gradient(135deg, rgba(200, 230, 200, 0.85) 0%, rgba(180, 210, 170, 0.9) 100%);
+            --card-bg: rgba(240, 255, 240, 0.85);
+            --text-color: #1a3a1a;
+            --border-color: rgba(80, 180, 80, 0.5);
+        }
+
         body {
             min-height: 100vh;
             font-family: 'Cairo', sans-serif;
-            background: #0A1A0F;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
             position: relative;
             overflow-x: hidden;
+            transition: background 0.3s ease;
         }
 
-        /* خلفية المتجر */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(125deg, #0A1A0F 0%, #1a3a1a 50%, #0A2A0F 100%);
+            background-size: 200% 200%;
+            animation: gradientMove 8s ease infinite;
+            z-index: -2;
+        }
+        
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
         .hero-bg {
             position: fixed;
             top: 0;
@@ -35,7 +78,8 @@
             background-image: url('https://i.postimg.cc/vmh0FNzj/1000245030.jpg');
             background-size: cover;
             background-position: center;
-            z-index: 0;
+            z-index: -1;
+            opacity: 0.6;
             animation: slowZoom 20s ease-in-out infinite alternate;
         }
         
@@ -46,7 +90,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(5, 20, 8, 0.75) 0%, rgba(2, 12, 5, 0.85) 100%);
+            background: var(--bg-overlay);
             z-index: 1;
         }
         
@@ -55,39 +99,41 @@
             100% { transform: scale(1.08); }
         }
 
-        /* البطاقة الرئيسية */
         .premium-card {
             position: relative;
             z-index: 15;
             max-width: 600px;
             width: 100%;
-            background: rgba(8, 28, 14, 0.65);
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             border-radius: 3rem;
-            border: 1px solid rgba(80, 200, 100, 0.35);
+            border: 1px solid var(--border-color);
             padding: 2rem 1.8rem 2.5rem;
             text-align: center;
-            animation: cardRise 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+            transition: all 0.3s ease;
         }
 
-        @keyframes cardRise {
-            0% { opacity: 0; transform: translateY(40px); }
-            100% { opacity: 1; transform: translateY(0); }
+        .avatar-wrapper {
+            margin-bottom: 1rem;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-gold);
+            box-shadow: 0 0 20px rgba(255, 217, 102, 0.6);
+            transition: all 0.3s ease;
+            animation: avatarGlow 2s infinite alternate;
+        }
+        
+        @keyframes avatarGlow {
+            0% { box-shadow: 0 0 5px rgba(255, 217, 102, 0.4); }
+            100% { box-shadow: 0 0 25px rgba(255, 217, 102, 0.9); }
         }
 
-        .falcon-icon i {
-            font-size: 3.5rem;
-            color: #9BDF9B;
-            text-shadow: 0 0 20px rgba(100, 200, 100, 0.5);
-            animation: floatIcon 3s ease-in-out infinite;
-        }
-
-        @keyframes floatIcon {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-        }
-
-        .brand-name {
+        .typed-name {
             font-size: 2.2rem;
             font-weight: 800;
             background: linear-gradient(135deg, #FFFFFF 0%, #C8F0D0 50%, #8BCF8C 100%);
@@ -95,6 +141,7 @@
             background-clip: text;
             color: transparent;
             margin: 0.5rem 0;
+            min-height: 70px;
         }
 
         .tagline {
@@ -112,7 +159,15 @@
             margin: 1rem 0;
         }
 
-        /* الأزرار */
+        .social-stats {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            font-size: 0.8rem;
+            color: var(--primary-green);
+        }
+
         .links-grid {
             display: flex;
             flex-direction: column;
@@ -131,8 +186,21 @@
             border-radius: 2rem;
             text-decoration: none;
             font-weight: 550;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .premium-link:hover {
+            animation: shake 0.3s ease-in-out 0s 2;
+            transform: translateY(-2px);
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
         }
         
         .premium-link i {
@@ -145,143 +213,198 @@
             flex: 1;
             text-align: right;
         }
-        
-        .premium-link:hover {
-            transform: translateY(-4px);
-            filter: brightness(1.05);
-            box-shadow: 0 12px 25px -8px rgba(0, 0, 0, 0.4);
-        }
 
-        /* ألوان حسب المنصة */
-        .link-whatsapp {
-            background: rgba(37, 211, 102, 0.85);
-            border-color: rgba(37, 211, 102, 0.9);
-            color: white;
+        .copy-link-btn {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: var(--primary-gold);
+            justify-content: center;
         }
+        .copy-link-btn i { color: var(--primary-gold); }
+        .copy-link-btn span { text-align: center; }
+
+        .link-whatsapp { background: rgba(37, 211, 102, 0.85); color: white; }
         .link-whatsapp i { color: white; }
         .link-whatsapp:hover { background: #25D366; }
 
-        .link-facebook {
-            background: rgba(24, 119, 242, 0.85);
-            border-color: rgba(24, 119, 242, 0.9);
-            color: white;
-        }
+        .link-facebook { background: rgba(24, 119, 242, 0.85); color: white; }
         .link-facebook i { color: white; }
         .link-facebook:hover { background: #1877F2; }
 
-        .link-default {
-            background: rgba(10, 35, 18, 0.7);
-            border-color: rgba(100, 180, 110, 0.3);
-            color: #F0FFF0;
-        }
-        .link-default i { color: #9BDF9B; }
-        .link-default:hover { background: rgba(40, 85, 55, 0.85); }
+        .link-default { background: rgba(10, 35, 18, 0.7); color: #F0FFF0; }
+        .link-default i { color: var(--primary-green); }
 
-        /* زر الصلاة على النبي */
-        .prayer-btn {
+        .floating-buttons {
             position: fixed;
             bottom: 25px;
             right: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
             z-index: 100;
-            background: linear-gradient(145deg, #0D2E1A, #071A0C);
-            width: 65px;
-            height: 65px;
+        }
+        
+        .prayer-btn, .order-btn {
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid #FFD966;
-            box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            background: linear-gradient(145deg, #0D2E1A, #071A0C);
+            border: 2px solid var(--primary-gold);
+            animation: pulse 2s infinite;
         }
-        .prayer-btn:hover { transform: scale(1.08); }
-        .prayer-btn i { font-size: 2rem; color: #FFD966; }
+        
+        .order-btn {
+            border-color: #25D366;
+            animation: none;
+            background: #25D366;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 217, 102, 0.5); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 217, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 217, 102, 0); }
+        }
+        
+        .prayer-btn i, .order-btn i { font-size: 1.5rem; color: white; }
+        .order-btn i { color: white; }
 
+        .theme-toggle, .share-btn {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .share-btn { left: 90px; }
+        .theme-toggle i, .share-btn i { font-size: 1.3rem; color: var(--primary-gold); }
+
+        .visitor-counter { font-size: 0.7rem; color: var(--primary-green); }
+        
         .store-footer {
             margin-top: 1.8rem;
             font-size: 0.7rem;
             color: rgba(130, 180, 120, 0.6);
             border-top: 1px solid rgba(100, 180, 100, 0.2);
             padding-top: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
-        /* استجابة للجوال */
+        .coming-soon-badge {
+            display: inline-block;
+            background: rgba(255, 217, 102, 0.2);
+            border: 1px solid var(--primary-gold);
+            border-radius: 50px;
+            padding: 5px 12px;
+            font-size: 0.7rem;
+            color: var(--primary-gold);
+            margin-top: 10px;
+        }
+
         @media (max-width: 550px) {
             .premium-card { padding: 1.5rem 1.2rem; margin: 1rem; }
-            .brand-name { font-size: 1.7rem; }
-            .prayer-btn { width: 55px; height: 55px; bottom: 15px; right: 15px; }
-            .prayer-btn i { font-size: 1.5rem; }
-            .premium-link { padding: 0.8rem 1.2rem; }
-            .premium-link i { font-size: 1.4rem; }
+            .typed-name { font-size: 1.5rem; min-height: 55px; }
+            .profile-avatar { width: 80px; height: 80px; }
+            .floating-buttons { bottom: 15px; right: 15px; gap: 10px; }
+            .prayer-btn, .order-btn { width: 48px; height: 48px; }
+            .theme-toggle, .share-btn { width: 42px; height: 42px; bottom: 15px; }
+            .share-btn { left: 72px; }
+            .social-stats { gap: 0.8rem; font-size: 0.65rem; }
         }
-
-        /* أنيميشن دخول الأزرار */
-        .premium-link {
-            opacity: 0;
-            transform: translateY(14px);
-            animation: btnGlide 0.55s ease forwards;
-        }
-        @keyframes btnGlide {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .premium-link:nth-child(1) { animation-delay: 0.1s; }
-        .premium-link:nth-child(2) { animation-delay: 0.2s; }
-        .premium-link:nth-child(3) { animation-delay: 0.3s; }
-        .premium-link:nth-child(4) { animation-delay: 0.4s; }
-        .premium-link:nth-child(5) { animation-delay: 0.5s; }
     </style>
 </head>
 <body>
 
+<div class="animated-bg"></div>
 <div class="hero-bg"></div>
 
 <div class="premium-card">
-    <div class="falcon-icon"><i class="fas fa-falcon"></i></div>
-    <h1 class="brand-name">Falcon Store</h1>
+    <div class="avatar-wrapper">
+        <img class="profile-avatar" id="profileAvatar" src="https://i.postimg.cc/vmh0FNzj/1000245030.jpg" alt="Falcon Store">
+    </div>
+    <div class="typed-name" id="typedName"></div>
     <div class="tagline">🦅 صقر السوق | أسرع شحن بأرخص سعر 🦅</div>
-    <div class="store-description">
+    <div class="store-description" id="storeDesc">
         <i class="fas fa-bolt"></i> شحن فوري | دعم 24 ساعة | ضمان كامل 💯<br>
         🎮 PUBG | Free Fire 💎 | Efootball | Roblox
     </div>
     
+    <div class="social-stats">
+        <span><i class="fas fa-users"></i> <span id="statsClients">500+</span> عميل</span>
+        <span><i class="fas fa-star"></i> <span id="statsSatisfaction">98%</span> رضا</span>
+        <span><i class="fas fa-clock"></i> شحن فوري</span>
+    </div>
+    
     <div class="links-grid" id="linksContainer"></div>
-    <div class="store-footer"><i class="fas fa-shield-alt"></i> ضمان حق العميل | آراء العملاء في التعليقات</div>
+    
+    <div class="coming-soon-badge" id="comingSoonBadge" style="display: none;">
+        <i class="fas fa-clock"></i> خدمة جديدة قريباً
+    </div>
+    
+    <div class="store-footer">
+        <span><i class="fas fa-shield-alt"></i> ضمان حق العميل</span>
+        <span class="visitor-counter" id="visitorCounter"><i class="fas fa-eye"></i> جارٍ التحميل...</span>
+    </div>
 </div>
 
-<!-- زر الصلاة على النبي -->
-<div class="prayer-btn" id="prayerButton">
-    <i class="fas fa-play"></i>
+<div class="floating-buttons">
+    <div class="order-btn" id="orderBtn">
+        <i class="fab fa-whatsapp"></i>
+    </div>
+    <div class="prayer-btn" id="prayerButton">
+        <i class="fas fa-play"></i>
+    </div>
 </div>
+
+<button class="theme-toggle" id="themeToggle">
+    <i class="fas fa-moon"></i>
+</button>
+
+<button class="share-btn" id="shareBtn">
+    <i class="fas fa-share-alt"></i>
+</button>
 
 <script>
-    // ==========================================
-    // 🦅 بيانات المتجر (عدل هنا بسهولة)
-    // ==========================================
+    // ========== بيانات المتجر (عدّل هنا بسهولة) ==========
     const storeData = {
         name: "Falcon Store",
+        fullNameForTyping: "Falcon Store",
+        avatar: "https://i.postimg.cc/vmh0FNzj/1000245030.jpg",
+        description: "شحن فوري | دعم 24 ساعة | ضمان كامل 💯\n🎮 PUBG | Free Fire 💎 | Efootball | Roblox",
         links: [
             { title: "📱 قناة الواتساب", url: "https://whatsapp.com/channel/0029VbBCyDFF6smx9vNVG62A", type: "whatsapp" },
             { title: "💬 جروب Falcon Store (1)", url: "https://whatsapp.com/channel/0029VbBCyDFF6smx9vNVG62A", type: "whatsapp" },
             { title: "💬 جروب Falcon Store (2)", url: "https://whatsapp.com/channel/0029VbBCyDFF6smx9vNVG62A", type: "whatsapp" },
             { title: "✅ بوست الضمان وآراء العملاء", url: "https://www.facebook.com/share/p/12Frqq4qLdy/", type: "facebook" },
             { title: "📞 تواصل مباشر مع فالكون", url: "https://wa.me/201121816129", type: "whatsapp" }
-        ]
+        ],
+        whatsappOrderNumber: "201121816129", // <-- تم التعديل هنا
+        comingSoon: false
     };
 
-    // رابط صوت الصلاة على النبي (شغال 100%)
+    // ========== إعدادات الصوت ==========
     const PRAYER_AUDIO_URL = "https://www.ashefaa.com/jawal/ranat/saly-3ala-mo7amad.mp3";
-
-    // ==========================================
-    // نظام الصوت
-    // ==========================================
     let clickAudioContext = null;
     let prayerAudio = null;
     let isPrayerPlaying = false;
     const prayerBtn = document.getElementById('prayerButton');
     const prayerIcon = prayerBtn ? prayerBtn.querySelector('i') : null;
 
-    // صوت "بيب" للأزرار العادية
     function playBeep() {
         try {
             if (!clickAudioContext) {
@@ -294,44 +417,34 @@
             gainNode.connect(clickAudioContext.destination);
             oscillator.frequency.value = 880;
             oscillator.type = 'sine';
-            gainNode.gain.value = 0.15;
+            gainNode.gain.value = 0.12;
             oscillator.start();
-            gainNode.gain.exponentialRampToValueAtTime(0.00001, clickAudioContext.currentTime + 0.15);
-            oscillator.stop(clickAudioContext.currentTime + 0.15);
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, clickAudioContext.currentTime + 0.1);
+            oscillator.stop(clickAudioContext.currentTime + 0.1);
             clickAudioContext.resume();
-        } catch(e) { console.log("Beep error:", e); }
+        } catch(e) {}
     }
 
-    // تحديث أيقونة زر الصلاة
     function updatePrayerIcon(playing) {
         if (prayerIcon) {
-            if (playing) {
-                prayerIcon.className = 'fas fa-pause';
-            } else {
-                prayerIcon.className = 'fas fa-play';
-            }
+            prayerIcon.className = playing ? 'fas fa-pause' : 'fas fa-play';
         }
     }
 
-    // تشغيل صوت الصلاة
     function playPrayerSound() {
         if (prayerAudio && isPrayerPlaying) {
-            // إذا كان الصوت شغالاً، أوقفه
             prayerAudio.pause();
             prayerAudio.currentTime = 0;
             isPrayerPlaying = false;
             updatePrayerIcon(false);
         } else {
-            // إذا كان الصوت متوقفاً، شغله
             if (prayerAudio) {
                 prayerAudio.currentTime = 0;
-                prayerAudio.play().catch(e => console.log("Prayer play error:", e));
+                prayerAudio.play().catch(() => {});
             } else {
                 prayerAudio = new Audio(PRAYER_AUDIO_URL);
                 prayerAudio.volume = 0.9;
-                prayerAudio.play().catch(e => console.log("Prayer load error:", e));
-                
-                // عند انتهاء الصوت تلقائياً
+                prayerAudio.play().catch(() => {});
                 prayerAudio.addEventListener('ended', () => {
                     isPrayerPlaying = false;
                     updatePrayerIcon(false);
@@ -342,9 +455,7 @@
         }
     }
 
-    // ==========================================
-    // عرض الأزرار
-    // ==========================================
+    // ========== عرض الأزرار ==========
     function getButtonClass(type) {
         switch(type) {
             case 'whatsapp': return 'link-whatsapp';
@@ -361,10 +472,33 @@
         }
     }
 
+    function copyToClipboard(text, buttonElement) {
+        navigator.clipboard.writeText(text).then(() => {
+            const originalHTML = buttonElement.innerHTML;
+            buttonElement.innerHTML = '<i class="fas fa-check"></i><span>تم النسخ!</span>';
+            setTimeout(() => {
+                buttonElement.innerHTML = originalHTML;
+            }, 2000);
+        }).catch(() => {
+            alert("فشل النسخ، حاول يدوياً");
+        });
+    }
+
     function renderStore() {
         const container = document.getElementById('linksContainer');
         if(!container) return;
         container.innerHTML = '';
+        
+        const copyLinkBtn = document.createElement('a');
+        copyLinkBtn.className = 'premium-link copy-link-btn';
+        copyLinkBtn.href = '#';
+        copyLinkBtn.innerHTML = '<i class="fas fa-copy"></i><span>📋 نسخ رابط الموقع</span>';
+        copyLinkBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            copyToClipboard(window.location.href, copyLinkBtn);
+            playBeep();
+        });
+        container.appendChild(copyLinkBtn);
         
         storeData.links.forEach(link => {
             const a = document.createElement('a');
@@ -373,18 +507,15 @@
             a.target = '_blank';
             a.rel = 'noopener noreferrer';
             
-            // إضافة أيقونة
             const icon = document.createElement('i');
             icon.className = getButtonIcon(link.type);
             
-            // إضافة النص
             const span = document.createElement('span');
             span.innerText = link.title;
             
             a.appendChild(icon);
             a.appendChild(span);
             
-            // إضافة صوت البيب عند الضغط
             a.addEventListener('click', (e) => {
                 playBeep();
             });
@@ -393,14 +524,100 @@
         });
     }
 
-    // ==========================================
-    // بدء التشغيل
-    // ==========================================
+    function typeWriter(element, text, speed = 80) {
+        let i = 0;
+        element.innerHTML = '';
+        function type() {
+            if (i < text.length) {
+                element.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(type, speed);
+            }
+        }
+        type();
+    }
+
+    function initVisitorCounter() {
+        let visits = localStorage.getItem('falcon_visits');
+        if (!visits) {
+            visits = 217;
+        } else {
+            visits = parseInt(visits) + 1;
+        }
+        localStorage.setItem('falcon_visits', visits);
+        document.getElementById('visitorCounter').innerHTML = `<i class="fas fa-eye"></i> ${visits} زائر`;
+    }
+
+    function initShareButton() {
+        const shareBtn = document.getElementById('shareBtn');
+        shareBtn.addEventListener('click', () => {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Falcon Store',
+                    text: 'تعالوا شوفوا متجر Falcon Store للشحن السريع',
+                    url: window.location.href
+                }).catch(() => {});
+            } else {
+                copyToClipboard(window.location.href, shareBtn);
+            }
+        });
+    }
+
+    function initOrderButton() {
+        const orderBtn = document.getElementById('orderBtn');
+        orderBtn.addEventListener('click', () => {
+            const message = encodeURIComponent("السلام عليكم، أريد طلب شحن من Falcon Store");
+            window.open(`https://wa.me/${storeData.whatsappOrderNumber}?text=${message}`, '_blank');
+            playBeep();
+        });
+    }
+
+    function initThemeToggle() {
+        const themeBtn = document.getElementById('themeToggle');
+        const icon = themeBtn.querySelector('i');
+        
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+        
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            if (document.body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                localStorage.setItem('theme', 'dark');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        });
+    }
+
+    function initComingSoon() {
+        if (storeData.comingSoon) {
+            document.getElementById('comingSoonBadge').style.display = 'inline-block';
+        }
+    }
+
+    function loadDynamicData() {
+        document.getElementById('profileAvatar').src = storeData.avatar;
+        document.getElementById('storeDesc').innerHTML = `<i class="fas fa-bolt"></i> ${storeData.description.replace(/\n/g, '<br>')}`;
+        const nameElement = document.getElementById('typedName');
+        typeWriter(nameElement, storeData.fullNameForTyping, 80);
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         renderStore();
-        document.querySelector('.brand-name').innerText = storeData.name;
+        loadDynamicData();
+        initVisitorCounter();
+        initShareButton();
+        initThemeToggle();
+        initOrderButton();
+        initComingSoon();
         
-        // إعداد زر الصلاة
         if (prayerBtn) {
             prayerBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -408,11 +625,8 @@
             });
         }
         
-        // تفعيل الصوت بعد أول تفاعل من المستخدم (سياسة المتصفحات)
         const enableAudio = () => {
-            if (clickAudioContext) {
-                clickAudioContext.resume();
-            }
+            if (clickAudioContext) clickAudioContext.resume();
             document.removeEventListener('click', enableAudio);
             document.removeEventListener('touchstart', enableAudio);
         };
